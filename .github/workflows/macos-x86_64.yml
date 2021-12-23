@@ -19,7 +19,7 @@ jobs:
     - name: build
       run: |
         export PATH="/usr/local/opt/bison/bin:/usr/local/opt/libtool/libexec/gnubin:$PATH"
-        make -j3
+        make -j
     - name: compress build folder
       run: tar czf build.tar.gz build
     - uses: actions/upload-artifact@v1
