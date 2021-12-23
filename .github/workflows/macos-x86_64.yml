@@ -1,0 +1,28 @@
+name: macos-x86_64
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build_x86_64:
+    runs-on: macOS-11
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_13.2.1.app
+    - name: install dependencies
+      run: brew install bison mingw-w64 libtool molten-vk vulkan-headers jxrlib faudio sdl2 automake glib
+    - name: build
+      run: |
+        export PATH="/usr/local/opt/bison/bin:/usr/local/opt/libtool/libexec/gnubin:$PATH"
+        make -j3
+    - name: compress build folder
+      run: tar czf build.tar.gz build
+    - uses: actions/upload-artifact@v1
+      with:
+        name: buildfolder
+        path: build.tar.gz
